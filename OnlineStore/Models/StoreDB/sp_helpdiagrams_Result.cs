@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineStore.Models.OnlineStore
+namespace OnlineStore.Models.StoreDB
 {
     using System;
     

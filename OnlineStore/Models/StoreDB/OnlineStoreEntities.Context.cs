@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineStore.Models.OnlineStore
+namespace OnlineStore.Models.StoreDB
 {
     using System;
     using System.Data.Entity;
@@ -28,6 +28,7 @@ namespace OnlineStore.Models.OnlineStore
         }
     
         public virtual DbSet<Basket> Basket { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Goods> Goods { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }

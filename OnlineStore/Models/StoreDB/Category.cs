@@ -7,23 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineStore.Models.OnlineStore
+namespace OnlineStore.Models.StoreDB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Category()
         {
-            this.Users = new HashSet<User>();
+            this.Goods = new HashSet<Goods>();
         }
     
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public bool Visibility { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Goods> Goods { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using OnlineStore.Models;
-using OnlineStore.Models.OnlineStore;
+using OnlineStore.Models.StoreDB;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 
 namespace OnlineStore.Controllers
 {
-    public class AuthenticationController : Controller
+    public class AccountController : Controller
     {
         public ActionResult Login()
         {
@@ -17,11 +17,13 @@ namespace OnlineStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
-            User user = null;
+            User user;
+            Role userRole;
 
             using (OnlineStoreEntities db = new OnlineStoreEntities())
             {
                 user = db.Users.FirstOrDefault(u => u.Login == model.Login);
+                userRole = db.Roles.Find(user.RoleId);
             }
 
             string hashPass = Hashing.Hashing.GenerateHash(model.Password + user.Salt);
@@ -29,7 +31,11 @@ namespace OnlineStore.Controllers
             if (hashPass == user.Password)
             {
                 FormsAuthentication.SetAuthCookie(model.Login, true);
-                return RedirectToAction("Index", "Test");
+
+                if (userRole.RoleName == "admin")
+                    return RedirectToAction("Index", "CategoriesAdmin");
+
+                return RedirectToAction("Index", "Categories");
             }
             else
             {

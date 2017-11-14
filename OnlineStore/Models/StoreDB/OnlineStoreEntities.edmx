@@ -14,6 +14,14 @@
           <Property Name="ProductId" Type="int" />
           <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Visibility" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Goods">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -24,6 +32,7 @@
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Visibility" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -82,6 +91,18 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             </Principal>
             <Dependent Role="Basket">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Goods_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Goods" Type="Self.Goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Goods">
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -154,6 +175,7 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="OnlineStoreModelStoreContainer">
           <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -174,6 +196,10 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <AssociationSet Name="FK_Basket_Users" Association="Self.FK_Basket_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Basket" EntitySet="Basket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Goods_Categories" Association="Self.FK_Goods_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Goods" EntitySet="Goods" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseStatistics_Goods" Association="Self.FK_PurchaseStatistics_Goods">
             <End Role="Goods" EntitySet="Goods" />
@@ -204,6 +230,15 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <NavigationProperty Name="Goods" Relationship="Self.FK_Basket_Goods" FromRole="Basket" ToRole="Goods" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Basket_Users" FromRole="Basket" ToRole="Users" />
         </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Visibility" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Goods" Relationship="Self.FK_Goods_Categories" FromRole="Categories" ToRole="Goods" />
+        </EntityType>
         <EntityType Name="Goods">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -214,7 +249,9 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Visibility" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" />
           <NavigationProperty Name="Basket" Relationship="Self.FK_Basket_Goods" FromRole="Goods" ToRole="Basket" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK_Goods_Categories" FromRole="Goods" ToRole="Categories" />
           <NavigationProperty Name="PurchaseStatistics" Relationship="Self.FK_PurchaseStatistics_Goods" FromRole="Goods" ToRole="PurchaseStatistics" />
         </EntityType>
         <EntityType Name="Role">
@@ -281,6 +318,18 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Goods_Categories">
+          <End Role="Categories" Type="OnlineStoreModel.Category" Multiplicity="0..1" />
+          <End Role="Goods" Type="Self.Goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Goods">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseStatistics_Goods">
           <End Role="Goods" Type="Self.Goods" Multiplicity="0..1" />
           <End Role="PurchaseStatistics" Type="Self.PurchaseStatistics" Multiplicity="*" />
@@ -319,6 +368,7 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
         </Association>
         <EntityContainer Name="OnlineStoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Basket" EntityType="Self.Basket" />
+          <EntitySet Name="Categories" EntityType="OnlineStoreModel.Category" />
           <EntitySet Name="Goods" EntityType="Self.Goods" />
           <EntitySet Name="Roles" EntityType="OnlineStoreModel.Role" />
           <EntitySet Name="Users" EntityType="OnlineStoreModel.User" />
@@ -330,6 +380,10 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <AssociationSet Name="FK_Basket_Users" Association="Self.FK_Basket_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Basket" EntitySet="Basket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Goods_Categories" Association="Self.FK_Goods_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Goods" EntitySet="Goods" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseStatistics_Goods" Association="Self.FK_PurchaseStatistics_Goods">
             <End Role="Goods" EntitySet="Goods" />
@@ -401,6 +455,15 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="OnlineStoreModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Goods">
             <EntityTypeMapping TypeName="OnlineStoreModel.Goods">
               <MappingFragment StoreEntitySet="Goods">
@@ -410,6 +473,7 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

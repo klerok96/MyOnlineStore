@@ -1,5 +1,5 @@
 ﻿using OnlineStore.Models;
-using OnlineStore.Models.OnlineStore;
+using OnlineStore.Models.StoreDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;

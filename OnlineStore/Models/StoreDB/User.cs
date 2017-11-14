@@ -7,29 +7,32 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineStore.Models.OnlineStore
+namespace OnlineStore.Models.StoreDB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Goods
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Goods()
+        public User()
         {
             this.Basket = new HashSet<Basket>();
             this.PurchaseStatistics = new HashSet<PurchaseStatistics>();
         }
     
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public int Quantity { get; set; }
-        public int Visibility { get; set; }
+        public int UserId { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public Nullable<int> RoleId { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public decimal Money { get; set; }
+        public string Salt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Basket> Basket { get; set; }
+        public virtual Role Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseStatistics> PurchaseStatistics { get; set; }
     }
