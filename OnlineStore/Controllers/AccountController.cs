@@ -87,7 +87,7 @@ namespace OnlineStore.Controllers
                     {
                         FormsAuthentication.SetAuthCookie(model.Login, true);
 
-                        return RedirectToAction("Index", "Test");
+                        return RedirectToAction("Index", "Categories");
                     }
                 }
                 else

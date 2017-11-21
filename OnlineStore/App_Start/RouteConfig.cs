@@ -14,10 +14,38 @@ namespace OnlineStore
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Categories", action = "Index", id = UrlParameter.Optional }
+                null,
+                "Goods/{action}/{genre}/Page{page}",
+                new { controller = "Goods", action = "Index" },
+                new { page = @"\d+" }
             );
+
+            routes.MapRoute(
+                null,
+                "Goods/{action}/Page{page}",
+                new { controller = "Goods", action = "Index", genre = (string)null },
+                new { page = @"\d+" }
+            );
+
+            routes.MapRoute(
+                null,
+                "Goods/{action}/{genre}",
+                new { controller = "Goods", action = "Index", page = 1 }
+            );
+
+            routes.MapRoute(
+                null,
+                "Goods/{action}/",
+                new { controller = "Goods", action = "Index" }
+            );
+
+
+            routes.MapRoute(
+                null,
+                "{controller}/{action}/{id}",
+                new { controller = "categories", action = "index", id = UrlParameter.Optional }
+            );
+
         }
     }
 }

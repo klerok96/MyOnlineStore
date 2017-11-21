@@ -1,0 +1,74 @@
+﻿@model PagedList.IPagedList<OnlineStore.Models.StoreDB.Goods>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            "dsd"
+        </th>
+        <th>
+            "dsd"
+        </th>
+        <th>
+            "dsd"
+        </th>
+        <th>
+            "dsd"
+        </th>
+        <th>
+            "dsd"
+        </th>
+        <th>
+            "dsd"
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Visibility)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Categories.CategoryName)
+        </td>
+        <td>
+            @Html.RouteLink("Edit", new
+           {
+               controller = "Goods",
+               action = "Edit",
+               genre = ViewBag.Genre,
+               page = ViewBag.Page,
+               id = item.ProductId
+           }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
+        </td>
+    </tr>
+}
+
+</table>
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

@@ -26,7 +26,7 @@ namespace OnlineStore.Models.StoreDB
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public int Visibility { get; set; }
+        public bool Visibility { get; set; }
         public Nullable<int> CategoryId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

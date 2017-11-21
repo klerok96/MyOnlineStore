@@ -1,0 +1,32 @@
+﻿@model IEnumerable<OnlineStore.Models.StoreDB.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.RouteLink(item.CategoryName, new
+           {
+               controller = "Goods",
+               action = "Index",
+               genre = item.CategoryName
+           })
+        </td>
+    </tr>
+}
+
+</table>
