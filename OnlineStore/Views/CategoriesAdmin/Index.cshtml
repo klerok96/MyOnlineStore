@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<OnlineStore.Models.StoreDB.Category>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Категории";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,7 +23,12 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
+            @Html.RouteLink(item.CategoryName, new
+                   {
+                       controller = "GoodsAdmin",
+                       action = "Index",
+                       genre = item.CategoryName
+                   })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Visibility)

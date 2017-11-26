@@ -152,7 +152,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoriesAdminController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\GoodsAdminController.cs" />
     <Compile Include="Controllers\GoodsController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -217,10 +219,13 @@
     <Content Include="Views\CategoriesAdmin\Edit.cshtml" />
     <Content Include="Views\CategoriesAdmin\Index.cshtml" />
     <Content Include="Views\Goods\Index.cshtml" />
-    <Content Include="Views\Goods\Create.cshtml" />
-    <Content Include="Views\Goods\Delete.cshtml" />
-    <Content Include="Views\Goods\Details.cshtml" />
-    <Content Include="Views\Goods\Edit.cshtml" />
+    <Content Include="Views\GoodsAdmin\Create.cshtml" />
+    <Content Include="Views\GoodsAdmin\Delete.cshtml" />
+    <Content Include="Views\GoodsAdmin\Details.cshtml" />
+    <Content Include="Views\GoodsAdmin\Edit.cshtml" />
+    <Content Include="Views\GoodsAdmin\Index.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Manage\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

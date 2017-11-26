@@ -42,6 +42,33 @@ namespace OnlineStore
 
             routes.MapRoute(
                 null,
+                "GoodsAdmin/{action}/{genre}/Page{page}",
+                new { controller = "GoodsAdmin", action = "Index" },
+                new { page = @"\d+" }
+            );
+
+            routes.MapRoute(
+                null,
+                "GoodsAdmin/{action}/Page{page}",
+                new { controller = "GoodsAdmin", action = "Index", genre = (string)null },
+                new { page = @"\d+" }
+            );
+
+            routes.MapRoute(
+                null,
+                "GoodsAdmin/{action}/{genre}",
+                new { controller = "GoodsAdmin", action = "Index", page = 1 }
+            );
+
+            routes.MapRoute(
+                null,
+                "GoodsAdmin/{action}/",
+                new { controller = "GoodsAdmin", action = "Index" }
+            );
+
+
+            routes.MapRoute(
+                null,
                 "{controller}/{action}/{id}",
                 new { controller = "categories", action = "index", id = UrlParameter.Optional }
             );
