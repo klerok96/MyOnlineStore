@@ -1,7 +1,7 @@
-﻿@model OnlineStore.Models.StoreDB.User
+﻿@model OnlineStore.Models.ManageModel
 
 @{
-    ViewBag.Title = "Пользователь / Редактирование";
+    ViewBag.Title = "Пользователь / редаткирвоание";
 }
 
 <h2>Пользователь</h2>
@@ -10,16 +10,16 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>Редактирование</h4>
         <hr />
-        @if (ViewBag.Suc == true)
-        {
-            <p>Сохранено</p>
-        }
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.UserId)
+        @if (ViewBag.Suc == true)
+        {            
+            <b>Сохранено</b>
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-2" })

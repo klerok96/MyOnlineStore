@@ -138,6 +138,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -150,6 +152,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BasketController.cs" />
     <Compile Include="Controllers\CategoriesAdminController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\GoodsAdminController.cs" />
@@ -161,6 +164,9 @@
     </Compile>
     <Compile Include="Hashing\Hashing.cs" />
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\BasketModel.cs" />
+    <Compile Include="Models\GoodsModel.cs" />
+    <Compile Include="Models\ManageModel.cs" />
     <Compile Include="Models\StoreDB\Basket.cs">
       <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
     </Compile>
@@ -226,6 +232,7 @@
     <Content Include="Views\GoodsAdmin\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\Edit.cshtml" />
+    <Content Include="Views\Basket\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

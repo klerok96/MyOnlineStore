@@ -8,38 +8,38 @@ namespace OnlineStore.Controllers
 {
     public class AccountController : Controller
     {
+        OnlineStoreEntities db = new OnlineStoreEntities();
+
         public ActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
-            User user;
-            Role userRole;
-
-            using (OnlineStoreEntities db = new OnlineStoreEntities())
+            if (ModelState.IsValid)
             {
-                user = db.Users.FirstOrDefault(u => u.Login == model.Login);
-                userRole = db.Roles.Find(user.RoleId);
-            }
+                User user = db.Users.FirstOrDefault(u => u.Login == model.Login);
 
-            string hashPass = Hashing.Hashing.GenerateHash(model.Password + user.Salt);
+                if (user != null)
+                {
+                    Role userRole = db.Roles.Find(user.RoleId);
 
-            if (hashPass == user.Password)
-            {
-                FormsAuthentication.SetAuthCookie(model.Login, true);
+                    string hashPass = Hashing.Hashing.GenerateHash(model.Password + user.Salt);
 
-                if (userRole.RoleName == "admin")
-                    return RedirectToAction("Index", "CategoriesAdmin");
+                    if (hashPass == user.Password)
+                    {
+                        FormsAuthentication.SetAuthCookie(model.Login, true);
 
-                return RedirectToAction("Index", "Categories");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Неверный логин или пароль");
+                        if (userRole.RoleName == "admin")
+                            return RedirectToAction("Index", "CategoriesAdmin");
+
+                        return RedirectToAction("Index", "Categories");
+                    }
+                }
+                else
+                    ModelState.AddModelError("", "Неверный логин или пароль");
             }
 
             return View(model);
@@ -57,12 +57,8 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = null;
-
-                using (OnlineStoreEntities db = new OnlineStoreEntities())
-                {
-                    user = db.Users.FirstOrDefault(u => u.Login == model.Login);
-                }
+                User user = db.Users.FirstOrDefault(u => u.Login == model.Login);
+                
                 if (user == null)
                 {
                     string salt = Hashing.Hashing.CreateSalt();
@@ -103,6 +99,15 @@ namespace OnlineStore.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Categories");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace OnlineStore.Models
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string PasswordConfirm { get; set; }
     }
+
     public class LoginModel
     {
         [Display(Name = "Логин")]

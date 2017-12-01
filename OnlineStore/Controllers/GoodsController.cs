@@ -1,4 +1,5 @@
-﻿using OnlineStore.Models.StoreDB;
+﻿using OnlineStore.Models;
+using OnlineStore.Models.StoreDB;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -17,25 +18,45 @@ namespace OnlineStore.Controllers
             ViewBag.Genre = genre;
 
             List<Goods> goods;
+            var goodsM = new List<GoodsModel>();
 
             if (genre != null)
             {
-                Category category = db.Categories.FirstOrDefault(c => c.CategoryName == genre);
+                var category = db.Categories.FirstOrDefault(c => c.CategoryName == genre);
 
                 if (category != null)
-                    goods = db.Goods
-                        .Where(g => g.CategoryId == category.CategoryId)
-                        .ToList();
+                {
+                    goods = db.Goods.Where(g => g.CategoryId == category.CategoryId).ToList();
+
+                    foreach (var i in goods)
+                        goodsM.Add(new GoodsModel
+                        {
+                            Price = i.Price,
+                            ProductId = i.ProductId,
+                            ProductName = i.ProductName,
+                        });
+                }
+
                 else
                     return HttpNotFound();
             }
             else
+            {
                 goods = db.Goods.ToList();
+
+                foreach (var i in goods)
+                    goodsM.Add(new GoodsModel
+                    {
+                        Price = i.Price,
+                        ProductId = i.ProductId,
+                        ProductName = i.ProductName,
+                    });
+            }
 
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return View(goods.ToPagedList(pageNumber, pageSize));
+            return View(goodsM.ToPagedList(pageNumber, pageSize));
         }
 
         protected override void Dispose(bool disposing)

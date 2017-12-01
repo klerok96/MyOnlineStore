@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<OnlineStore.Models.StoreDB.Goods>
+﻿@model PagedList.IPagedList<OnlineStore.Models.GoodsModel>
 @using PagedList.Mvc;
 
 @{
@@ -7,13 +7,12 @@
 
 <h2>@ViewBag.Genre</h2>
 
+<div id="result"></div>
+
 <table class="table">
     <tr>
         <th>
             Имя
-        </th>
-        <th>
-            Описание
         </th>
         <th>
             Цена
@@ -21,25 +20,33 @@
         <th>
             Количество
         </th>
+        <th>
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-        </tr>
-    }
+        using (Ajax.BeginForm("AddToBasket", "Basket", new AjaxOptions { UpdateTargetId = "result"}))
+        {
+            @Html.Hidden("id", item.ProductId, new { @id = "id" })
+            <tr>
+                <td>
+                    @item.ProductName
+                </td>
+                <td>
+                    @item.Price.ToString("# руб")
+                </td>
+               
+                <td>
+                    @Html.EditorFor(modelItem => item.Quantity, null, "quantity", new { htmlAttributes = new { @min = "0", @max = "20", @class = "form-control" } })
+                </td>
+
+                <td>
+                    <input type="submit" value="В корзину" class="btn btn-default" />           
+                </td>
+            </tr>
+         }
+     }
 
 </table>
 
