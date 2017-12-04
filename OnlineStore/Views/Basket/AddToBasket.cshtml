@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Добавление";
+}
+
+
+<h4>Добавлено в корзину</h4>
+
+<br>
+
+<div>
+    @Html.ActionLink("Вернуться к товарам", "Index", null, new { onclick = "window.history.back();" }) |
+    @Html.ActionLink("Перейти в корзину", "Index")
+</div>

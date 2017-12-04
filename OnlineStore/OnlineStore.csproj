@@ -233,6 +233,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\Edit.cshtml" />
     <Content Include="Views\Basket\Index.cshtml" />
+    <Content Include="Views\Basket\AddToBasket.cshtml" />
+    <Content Include="Views\Basket\Purchase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

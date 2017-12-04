@@ -6,11 +6,15 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink(User.Identity.Name, "Edit", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink("Корзина", "Index", "Basket")
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Выход</a></li>
+            <li>
+                @Html.ActionLink(User.Identity.Name, "Edit", "Manage")
+            </li>
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Выход</a>
+            </li>
         </ul>
-
 
     }
 }

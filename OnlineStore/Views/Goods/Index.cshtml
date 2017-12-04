@@ -7,8 +7,6 @@
 
 <h2>@ViewBag.Genre</h2>
 
-<div id="result"></div>
-
 <table class="table">
     <tr>
         <th>
@@ -26,7 +24,7 @@
 
     @foreach (var item in Model)
     {
-        using (Ajax.BeginForm("AddToBasket", "Basket", new AjaxOptions { UpdateTargetId = "result"}))
+        using (Html.BeginForm("AddToBasket", "Basket"))
         {
             @Html.Hidden("id", item.ProductId, new { @id = "id" })
             <tr>
@@ -38,7 +36,7 @@
                 </td>
                
                 <td>
-                    @Html.EditorFor(modelItem => item.Quantity, null, "quantity", new { htmlAttributes = new { @min = "0", @max = "20", @class = "form-control" } })
+                    @Html.EditorFor(modelItem => item.Quantity, null, "quantity", new { htmlAttributes = new { @min = "1", @max = "20", @class = "form-control", @Value = "1" } })
                 </td>
 
                 <td>

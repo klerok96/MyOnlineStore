@@ -77,7 +77,7 @@ namespace OnlineStore.Controllers
                         });
                         db.SaveChanges();
 
-                        user = db.Users.Where(u => u.Login == model.Login && u.Password == hashPass).FirstOrDefault();
+                        user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == hashPass);
                     }
                     if (user != null)
                     {

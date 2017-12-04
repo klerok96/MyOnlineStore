@@ -1,1 +1,50 @@
-﻿
+﻿@model IEnumerable<OnlineStore.Models.BasketModel>
+
+@{
+    ViewBag.Title = "Корзина";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>Количество</th>
+        <th>Наименование</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasketName)
+        </td>
+        <td>
+            @(item.Price.ToString("# руб"))
+        </td>
+        <td>
+            @((item.Quantity * item.Price).ToString("# руб"))
+        </td>
+        <td>
+            @using (Html.BeginForm("Delete", "Basket"))
+            {
+                @Html.Hidden("id", item.BasketId, new { @id = "id" })
+                <input type="submit" value="Удалить из корзины" class="btn btn-default" onclick="return confirm('Вы уверены?')" />  
+            }
+        </td>
+    </tr>
+}
+    <td colspan="3" style="text-align: right;" >Итого:</td>
+    <td>@ViewBag.TotalAmount</td>
+    <td>
+        @using (Html.BeginForm("Purchase", "Basket"))
+        {
+           <input type="submit" value="Оформить заказ" class="btn btn-default"/>
+        }
+    </td>
+
+</table>

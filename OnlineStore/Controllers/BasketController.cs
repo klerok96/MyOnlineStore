@@ -20,8 +20,9 @@ namespace OnlineStore.Controllers
             var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
 
             var basketM = new List<BasketModel>();
+            var basket = db.Basket.Include(b => b.Goods).Where(b => b.UserId == user.UserId);
 
-            var basket = db.Basket.Include(b => b.Goods);
+            var totalAmount = new decimal();
 
             foreach (var i in basket)
             {
@@ -29,40 +30,81 @@ namespace OnlineStore.Controllers
                 {
                     BasketId = i.BasketId,
                     BasketName = i.Goods.ProductName,
-                    Price = i.Goods.Price * i.Quantity,
-                    Quantity = i.Quantity
+                    Price = i.Goods.Price,
+                    Quantity = i.Quantity 
                 });
+
+                totalAmount += i.Quantity * i.Goods.Price; 
             }
+
+            ViewBag.TotalAmount = totalAmount.ToString()+ " руб";
 
             return View(basketM);
         }
 
         [HttpPost]
-        public string AddToBasket(int id, int quantity)
+        public ActionResult AddToBasket(int id, int quantity)
         {
-            if (quantity != 0)
+
+            var loginCookie = User.Identity.Name;
+            var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
+       
+            var findProduct = db.Basket.FirstOrDefault(f => f.ProductId == id && f.UserId == user.UserId);
+     
+            if (findProduct != null)
+                findProduct.Quantity += quantity;
+            else
+                db.Basket.Add(new Basket
+                {
+                    ProductId = id,
+                    Quantity = quantity,
+                    UserId = user.UserId
+                });
+
+            db.SaveChanges();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var productOfB = db.Basket.Find(id);
+            db.Basket.Remove(productOfB);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Purchase()
+        {
+            var loginCookie = User.Identity.Name;
+            var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
+
+            var basketOfUser = db.Basket
+                .Where(b => b.UserId == user.UserId)
+                .ToList();
+
+            if (basketOfUser.Count != 0)
             {
-                var loginCookie = User.Identity.Name;
-                var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
+                Goods product;
+                foreach (var i in basketOfUser)
+                {
+                    product = db.Goods.FirstOrDefault(p => p.ProductId == i.ProductId);
 
-                var findProduct = db.Basket.FirstOrDefault(f => f.ProductId == id && f.UserId == user.UserId);
+                    product.Quantity -= i.Quantity;
+                }
 
-                if (findProduct != null)
-                    findProduct.Quantity += quantity;
-                else
-                    db.Basket.Add(new Basket
-                    {
-                        ProductId = id,
-                        Quantity = quantity,
-                        UserId = user.UserId
-                    });
+                db.Basket.RemoveRange(basketOfUser);
 
                 db.SaveChanges();
 
-                return "Добавлено в корзину";
+                ViewBag.Message = "Покупка завершена";
             }
+            else
+                ViewBag.Message = "Корзина пуста";
 
-            return "Выберите количество";
+            return View();
         }
 
         protected override void Dispose(bool disposing)
