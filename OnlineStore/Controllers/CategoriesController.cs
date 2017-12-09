@@ -14,7 +14,7 @@ namespace OnlineStore.Controllers
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(db.Categories.Where(c => c.Visibility == true).OrderByDescending(c => c.CategoryId).ToList());
         }
 
         protected override void Dispose(bool disposing)

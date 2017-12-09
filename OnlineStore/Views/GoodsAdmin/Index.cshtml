@@ -2,64 +2,52 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Товары";
 }
 
 <h2>@ViewBag.Genre</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Добавить", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
-            Имя
-        </th>
-        <th>
-            Описание
-        </th>
-        <th>
-            Цена
-        </th>
-        <th>
-            Количество
-        </th>
-        <th>
-            Видимость
-        </th>
-        <th>
-            Категория
-        </th>
+        <th>Нименование товара</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Видимость</th>
+        <th></th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Visibility)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Categories.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
-        </td>
-    </tr>
-}
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm("AddToBasket", "Basket"))
+        {
+            @Html.Hidden("id", item.ProductId, new { @id = "id" })
+            <tr>
+                <td>
+                    @Html.ActionLink(item.ProductName, "Details", new { id = item.ProductId })
+                <td>
+                    @item.Price.ToString("# руб")
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.Quantity, null, "quantity", new { htmlAttributes = new { @min = "1", @max = "20", @class = "form-control", @Value = "1" } })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visibility)
+                </td>
+                <td>
+                    <input type="submit" value="В корзину" class="btn btn-default" />
+                </td>
+                <td>
+                    @Html.ActionLink("Редактирвоать", "Edit", new { id = item.ProductId }) |
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+    }
 
 </table>
 

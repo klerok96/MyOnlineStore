@@ -1,0 +1,42 @@
+﻿@model IEnumerable<OnlineStore.Models.StoreDB.PurchaseStatistics>
+
+@{
+    ViewBag.Title = "Статистика покупок";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>Когда</th>
+        <th>Кто</th>
+        <th>Что</th>
+        <th>Количество</th>
+        <th>Цена</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Users.Login)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Goods.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @item.Price.ToString("# руб")
+        </td>
+    </tr>
+}
+    <tr>
+        <td colspan="3" style="text-align: right;">Итого:</td>
+        <td>@ViewBag.TotalAmount</td>
+        <td></td>
+    </tr>
+</table>

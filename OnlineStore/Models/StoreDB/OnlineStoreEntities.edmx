@@ -34,16 +34,11 @@
           <Property Name="Visibility" Type="bit" Nullable="false" />
           <Property Name="CategoryId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PurchaseStatistics">
           <Key>
             <PropertyRef Name="PSId" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="Price" />
           </Key>
-          <Property Name="PSId" Type="int" Nullable="false" />
+          <Property Name="PSId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="ProductId" Type="int" />
           <Property Name="Date" Type="date" Nullable="false" />
@@ -142,53 +137,13 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="OnlineStoreModelStoreContainer">
           <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseStatistics" EntityType="Self.PurchaseStatistics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PurchaseStatistics" EntityType="Self.PurchaseStatistics" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PurchaseStatistics].[PSId] AS [PSId], 
-    [PurchaseStatistics].[UserId] AS [UserId], 
-    [PurchaseStatistics].[ProductId] AS [ProductId], 
-    [PurchaseStatistics].[Date] AS [Date], 
-    [PurchaseStatistics].[Quantity] AS [Quantity], 
-    [PurchaseStatistics].[Price] AS [Price]
-    FROM [dbo].[PurchaseStatistics] AS [PurchaseStatistics]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Basket_Goods" Association="Self.FK_Basket_Goods">
             <End Role="Goods" EntitySet="Goods" />
             <End Role="Basket" EntitySet="Basket" />
@@ -254,6 +209,19 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <NavigationProperty Name="Categories" Relationship="Self.FK_Goods_Categories" FromRole="Goods" ToRole="Categories" />
           <NavigationProperty Name="PurchaseStatistics" Relationship="Self.FK_PurchaseStatistics_Goods" FromRole="Goods" ToRole="PurchaseStatistics" />
         </EntityType>
+        <EntityType Name="PurchaseStatistics">
+          <Key>
+            <PropertyRef Name="PSId" />
+          </Key>
+          <Property Name="PSId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Goods" Relationship="Self.FK_PurchaseStatistics_Goods" FromRole="PurchaseStatistics" ToRole="Goods" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_PurchaseStatistics_Users" FromRole="PurchaseStatistics" ToRole="Users" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -275,24 +243,8 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
           <Property Name="Money" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Basket" Relationship="Self.FK_Basket_Users" FromRole="Users" ToRole="Basket" />
-          <NavigationProperty Name="Roles" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
           <NavigationProperty Name="PurchaseStatistics" Relationship="Self.FK_PurchaseStatistics_Users" FromRole="Users" ToRole="PurchaseStatistics" />
-        </EntityType>
-        <EntityType Name="PurchaseStatistics">
-          <Key>
-            <PropertyRef Name="PSId" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="Price" />
-          </Key>
-          <Property Name="PSId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <NavigationProperty Name="Goods" Relationship="Self.FK_PurchaseStatistics_Goods" FromRole="PurchaseStatistics" ToRole="Goods" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_PurchaseStatistics_Users" FromRole="PurchaseStatistics" ToRole="Users" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
         </EntityType>
         <Association Name="FK_Basket_Goods">
           <End Role="Goods" Type="Self.Goods" Multiplicity="0..1" />
@@ -342,18 +294,6 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Users_Roles">
-          <End Role="Roles" Type="OnlineStoreModel.Role" Multiplicity="0..1" />
-          <End Role="Users" Type="OnlineStoreModel.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Roles">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PurchaseStatistics_Users">
           <End Role="Users" Type="OnlineStoreModel.User" Multiplicity="0..1" />
           <End Role="PurchaseStatistics" Type="Self.PurchaseStatistics" Multiplicity="*" />
@@ -366,13 +306,25 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="OnlineStoreModel.Role" Multiplicity="0..1" />
+          <End Role="Users" Type="OnlineStoreModel.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="OnlineStoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Basket" EntityType="Self.Basket" />
           <EntitySet Name="Categories" EntityType="OnlineStoreModel.Category" />
           <EntitySet Name="Goods" EntityType="Self.Goods" />
+          <EntitySet Name="PurchaseStatistics" EntityType="Self.PurchaseStatistics" />
           <EntitySet Name="Roles" EntityType="OnlineStoreModel.Role" />
           <EntitySet Name="Users" EntityType="OnlineStoreModel.User" />
-          <EntitySet Name="PurchaseStatistics" EntityType="Self.PurchaseStatistics" />
           <AssociationSet Name="FK_Basket_Goods" Association="Self.FK_Basket_Goods">
             <End Role="Goods" EntitySet="Goods" />
             <End Role="Basket" EntitySet="Basket" />
@@ -389,56 +341,15 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
             <End Role="Goods" EntitySet="Goods" />
             <End Role="PurchaseStatistics" EntitySet="PurchaseStatistics" />
           </AssociationSet>
-          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
           <AssociationSet Name="FK_PurchaseStatistics_Users" Association="Self.FK_PurchaseStatistics_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="PurchaseStatistics" EntitySet="PurchaseStatistics" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(OnlineStoreModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(OnlineStoreModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -477,6 +388,18 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseStatistics">
+            <EntityTypeMapping TypeName="OnlineStoreModel.PurchaseStatistics">
+              <MappingFragment StoreEntitySet="PurchaseStatistics">
+                <ScalarProperty Name="PSId" ColumnName="PSId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="OnlineStoreModel.Role">
               <MappingFragment StoreEntitySet="Roles">
@@ -499,42 +422,6 @@ warning 6002: The table/view 'OnlineStore.dbo.PurchaseStatistics' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PurchaseStatistics">
-            <EntityTypeMapping TypeName="OnlineStoreModel.PurchaseStatistics">
-              <MappingFragment StoreEntitySet="PurchaseStatistics">
-                <ScalarProperty Name="PSId" ColumnName="PSId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="OnlineStoreModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="OnlineStoreModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="OnlineStoreModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="OnlineStoreModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="OnlineStoreModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="OnlineStoreModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="OnlineStoreModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="OnlineStoreModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="OnlineStoreModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OnlineStore.Models
 {
-    public class BasketModel
+    public class BasketViewModel
     {
         public int BasketId { get; set; }
         public int Quantity { get; set; }

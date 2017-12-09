@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OnlineStore.Models.BasketModel>
+﻿@model IEnumerable<OnlineStore.Models.BasketViewModel>
 
 @{
     ViewBag.Title = "Корзина";
@@ -6,6 +6,7 @@
 
 <h2>@ViewBag.Title</h2>
 
+<h4>@ViewBag.Message</h4>
 <table class="table">
     <tr>
         <th>Количество</th>
@@ -38,13 +39,17 @@
         </td>
     </tr>
 }
-    <td colspan="3" style="text-align: right;" >Итого:</td>
-    <td>@ViewBag.TotalAmount</td>
-    <td>
-        @using (Html.BeginForm("Purchase", "Basket"))
-        {
-           <input type="submit" value="Оформить заказ" class="btn btn-default"/>
-        }
-    </td>
-
+    <tr>
+        <td colspan="3" style="text-align: right;">Итого:</td>
+        <td>@ViewBag.TotalAmount</td>
+        <td>
+            @if (ViewBag.Message == null)
+            {
+                using (Html.BeginForm("Purchase", "Basket"))
+                {
+                    <input type="submit" value="Купить" class="btn btn-default" />
+                }
+            }
+        </td>
+    </tr>
 </table>

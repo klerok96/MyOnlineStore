@@ -11,7 +11,8 @@ namespace OnlineStore.Models.StoreDB
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,11 +20,15 @@ namespace OnlineStore.Models.StoreDB
         {
             this.Goods = new HashSet<Goods>();
         }
-    
+
         public int CategoryId { get; set; }
+
+        [Display(Name = "Наименование")]
         public string CategoryName { get; set; }
+
+        [Display(Name = "Видимость")]
         public bool Visibility { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Goods> Goods { get; set; }
     }

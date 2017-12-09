@@ -32,8 +32,8 @@ namespace OnlineStore.Models.StoreDB
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Basket> Basket { get; set; }
-        public virtual Role Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseStatistics> PurchaseStatistics { get; set; }
+        public virtual Role Roles { get; set; }
     }
 }

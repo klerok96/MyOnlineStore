@@ -158,14 +158,13 @@
     <Compile Include="Controllers\GoodsAdminController.cs" />
     <Compile Include="Controllers\GoodsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hashing\Hashing.cs" />
     <Compile Include="Models\AccountModel.cs" />
-    <Compile Include="Models\BasketModel.cs" />
-    <Compile Include="Models\GoodsModel.cs" />
+    <Compile Include="Models\BasketViewModel.cs" />
     <Compile Include="Models\ManageModel.cs" />
     <Compile Include="Models\StoreDB\Basket.cs">
       <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
@@ -197,12 +196,6 @@
     <Compile Include="Models\StoreDB\Role.cs">
       <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StoreDB\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\StoreDB\sp_helpdiagrams_Result.cs">
-      <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\StoreDB\User.cs">
       <DependentUpon>OnlineStoreEntities.tt</DependentUpon>
     </Compile>
@@ -214,7 +207,6 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -235,6 +227,9 @@
     <Content Include="Views\Basket\Index.cshtml" />
     <Content Include="Views\Basket\AddToBasket.cshtml" />
     <Content Include="Views\Basket\Purchase.cshtml" />
+    <Content Include="Views\Goods\Details.cshtml" />
+    <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

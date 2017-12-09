@@ -1,22 +1,18 @@
 ﻿@model IEnumerable<OnlineStore.Models.StoreDB.Category>
 
 @{
-    ViewBag.Title = "Категории";
+    ViewBag.Title = "Категории товара";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Добавить", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Visibility)
-        </th>
+        <th>Наименование</th>
+        <th>Видимость</th>
         <th></th>
     </tr>
 
@@ -34,9 +30,8 @@
             @Html.DisplayFor(modelItem => item.Visibility)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CategoryId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CategoryId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CategoryId })
+            @Html.ActionLink("Редактирвоать", "Edit", new { id=item.CategoryId }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.CategoryId })
         </td>
     </tr>
 }

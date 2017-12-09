@@ -1,25 +1,18 @@
-﻿@model PagedList.IPagedList<OnlineStore.Models.GoodsModel>
+﻿@model PagedList.IPagedList<OnlineStore.Models.StoreDB.Goods>
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Товары";
 }
 
-<h2>@ViewBag.Genre</h2>
+<h2>@ViewBag.Title</h2>
 
 <table class="table">
     <tr>
-        <th>
-            Имя
-        </th>
-        <th>
-            Цена
-        </th>
-        <th>
-            Количество
-        </th>
-        <th>
-        </th>
+        <th>Наименование товара</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -29,7 +22,7 @@
             @Html.Hidden("id", item.ProductId, new { @id = "id" })
             <tr>
                 <td>
-                    @item.ProductName
+                    @Html.ActionLink(item.ProductName, "Details", new { id = item.ProductId })
                 </td>
                 <td>
                     @item.Price.ToString("# руб")

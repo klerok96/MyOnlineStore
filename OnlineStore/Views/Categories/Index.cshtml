@@ -1,29 +1,25 @@
 ﻿@model IEnumerable<OnlineStore.Models.StoreDB.Category>
 
 @{
-    ViewBag.Title = "Категории";
+    ViewBag.Title = "Категории товара";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.RouteLink(item.CategoryName, new
-           {
-               controller = "Goods",
-               action = "Index",
-               genre = item.CategoryName
-           })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+               @Html.RouteLink(item.CategoryName, new
+               {
+                   controller = "Goods",
+                   action = "Index",
+                   genre = item.CategoryName
+               })
+            </td>
+        </tr>
+    }
 
 </table>

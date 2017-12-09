@@ -40,26 +40,8 @@
         <dd>
             @Html.DisplayFor(model => model.Quantity)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Visibility)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Visibility)
-        </dd>
-
-        <dt>
-            Категория
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Categories.CategoryName)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Редактирвоать", "Edit", new { id = Model.ProductId }) |
     @Html.ActionLink("Вернуться", "Index", null, new { onclick = "window.history.back();" })
 </p>

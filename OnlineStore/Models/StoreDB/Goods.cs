@@ -11,7 +11,8 @@ namespace OnlineStore.Models.StoreDB
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Goods
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,10 +23,20 @@ namespace OnlineStore.Models.StoreDB
         }
     
         public int ProductId { get; set; }
+
+        [Display(Name = "Наименование")]
         public string ProductName { get; set; }
+
+        [Display(Name = "Описание")]
         public string Description { get; set; }
+
+        [Display(Name = "Цена")]
         public decimal Price { get; set; }
+
+        [Display(Name = "Количество")]
         public int Quantity { get; set; }
+
+        [Display(Name = "Видимость")]
         public bool Visibility { get; set; }
         public Nullable<int> CategoryId { get; set; }
     

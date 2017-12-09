@@ -6,27 +6,39 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Web.Routing;
 
 namespace OnlineStore.Controllers
 {
     [Authorize]
     public class BasketController : Controller
     {
-        OnlineStoreEntities db = new OnlineStoreEntities();
+        OnlineStoreEntities db;
+        User currentUser;
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            db = new OnlineStoreEntities();
+
+            if (requestContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                string loginCookie = requestContext.HttpContext.User.Identity.Name;
+                currentUser = db.Users.FirstOrDefault(u => u.Login == loginCookie);
+            }
+
+            base.Initialize(requestContext);
+        }
         
         public ActionResult Index()
         {
-            var loginCookie = User.Identity.Name;
-            var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
-
-            var basketM = new List<BasketModel>();
-            var basket = db.Basket.Include(b => b.Goods).Where(b => b.UserId == user.UserId);
+            var basketM = new List<BasketViewModel>();
+            var basket = db.Basket.Include(b => b.Goods).Where(b => b.UserId == currentUser.UserId);
 
             var totalAmount = new decimal();
 
             foreach (var i in basket)
             {
-                basketM.Add(new BasketModel
+                basketM.Add(new BasketViewModel
                 {
                     BasketId = i.BasketId,
                     BasketName = i.Goods.ProductName,
@@ -37,19 +49,18 @@ namespace OnlineStore.Controllers
                 totalAmount += i.Quantity * i.Goods.Price; 
             }
 
-            ViewBag.TotalAmount = totalAmount.ToString()+ " руб";
+            if (currentUser.Money < totalAmount)
+                ViewBag.Message = "Не хватает денег!";
 
-            return View(basketM);
+            ViewBag.TotalAmount = totalAmount + " руб";
+
+            return View(basketM.OrderByDescending(b => b.BasketId));
         }
 
         [HttpPost]
         public ActionResult AddToBasket(int id, int quantity)
         {
-
-            var loginCookie = User.Identity.Name;
-            var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
-       
-            var findProduct = db.Basket.FirstOrDefault(f => f.ProductId == id && f.UserId == user.UserId);
+            var findProduct = db.Basket.FirstOrDefault(f => f.ProductId == id && f.UserId == currentUser.UserId);
      
             if (findProduct != null)
                 findProduct.Quantity += quantity;
@@ -58,7 +69,7 @@ namespace OnlineStore.Controllers
                 {
                     ProductId = id,
                     Quantity = quantity,
-                    UserId = user.UserId
+                    UserId = currentUser.UserId
                 });
 
             db.SaveChanges();
@@ -78,25 +89,37 @@ namespace OnlineStore.Controllers
         [HttpPost]
         public ActionResult Purchase()
         {
-            var loginCookie = User.Identity.Name;
-            var user = db.Users.FirstOrDefault(u => u.Login == loginCookie);
-
             var basketOfUser = db.Basket
-                .Where(b => b.UserId == user.UserId)
+                .Where(b => b.UserId == currentUser.UserId)
                 .ToList();
 
             if (basketOfUser.Count != 0)
             {
                 Goods product;
+                PurchaseStatistics statistics;
+                decimal sumPurchase = 0;
+
                 foreach (var i in basketOfUser)
                 {
                     product = db.Goods.FirstOrDefault(p => p.ProductId == i.ProductId);
-
                     product.Quantity -= i.Quantity;
+
+                    sumPurchase += product.Price * i.Quantity;
+
+                    statistics = new PurchaseStatistics
+                    {
+                        ProductId = product.ProductId,
+                        UserId = currentUser.UserId,
+                        Quantity = i.Quantity,
+                        Date = DateTime.Now,
+                        Price = product.Price * i.Quantity
+                    };
+
+                    db.PurchaseStatistics.Add(statistics);
                 }
 
+                currentUser.Money -= sumPurchase;
                 db.Basket.RemoveRange(basketOfUser);
-
                 db.SaveChanges();
 
                 ViewBag.Message = "Покупка завершена";

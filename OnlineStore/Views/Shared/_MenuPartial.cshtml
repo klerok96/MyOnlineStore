@@ -1,0 +1,15 @@
+﻿@if (User.IsInRole("admin"))
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Категории", "Index", "CategoriesAdmin")</li>
+        <li>@Html.ActionLink("Поиск", "Index", "Search")</li>
+        <li>@Html.ActionLink("Статистика", "Index", "Statistics")</li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Категории", "Index", "Categories")</li>
+        <li>@Html.ActionLink("Поиск", "Index", "Search")</li>
+    </ul>
+}

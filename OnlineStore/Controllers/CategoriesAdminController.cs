@@ -18,7 +18,7 @@ namespace OnlineStore.Controllers
         // GET: CategoriesAdmin
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(db.Categories.OrderByDescending(c => c.CategoryId).ToList());
         }
 
         // GET: CategoriesAdmin/Details/5

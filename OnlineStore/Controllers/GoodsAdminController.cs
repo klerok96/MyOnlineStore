@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models.StoreDB;
 using PagedList;
+using OnlineStore.Models;
 
 namespace OnlineStore.Controllers
 {
@@ -25,12 +26,10 @@ namespace OnlineStore.Controllers
 
             if (genre != null)
             {
-                Category category = db.Categories.FirstOrDefault(c => c.CategoryName == genre);
+                var category = db.Categories.FirstOrDefault(c => c.CategoryName == genre);
 
                 if (category != null)
-                    goods = db.Goods
-                        .Where(g => g.CategoryId == category.CategoryId)
-                        .ToList();
+                    goods = db.Goods.Where(g => g.CategoryId == category.CategoryId).ToList();
                 else
                     return HttpNotFound();
             }
@@ -40,7 +39,7 @@ namespace OnlineStore.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return View(goods.ToPagedList(pageNumber, pageSize));
+            return View(goods.OrderByDescending(g => g.ProductId).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: GoodsAdmin/Details/5
@@ -55,6 +54,7 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(goods);
         }
 
@@ -95,6 +95,7 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "CategoryName", goods.CategoryId);
             return View(goods);
         }

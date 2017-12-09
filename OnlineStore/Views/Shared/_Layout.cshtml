@@ -15,11 +15,7 @@
                 @Html.ActionLink("Online store", "Index", "Categories", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Категории", "Index", "Categories")</li>
-                    <li>@Html.ActionLink("Поиск", "Index", "Search")</li>
-                    <li>@Html.ActionLink("О программе", "Index", "Info")</li>
-                </ul>
+                @Html.Partial("_MenuPartial")
                 @Html.Partial("_LoginPartial")
             </div>               
         </div>
